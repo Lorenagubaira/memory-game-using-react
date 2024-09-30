@@ -1,19 +1,19 @@
 {
-	"title": {
-		"us": "Logo generator using AI",
-		"es": "Generador de logos usando IA"
-	},
-	"slug": "logo-generator-using-ai",
-	"status": "published",
-	"duration": 4,
-	"preview": "https://storage.googleapis.com/screenshots-breathecode/eb7a96488d13a4567089b65dec4afc7292dd100e851045cb8c76ccb69fec9787",
-	"translations": ["es", "us"],
-	"difficulty": "intermediate",
-	"technologies": ["javascript", "react", "prompt-engineer", "generative-ai"],
-	"description": {
-		"us": "Create a Company Logo Generator using AI. Build a React app using ChatGPT’s API to generate logo descriptions from user input. Enhance your coding skills with this interactive project!",
-		"es": "Crea un Generador de Logotipos de Empresa usando IA. Construye una aplicación React que utiliza la API de ChatGPT para generar descripciones de logotipos desde entradas de usuario. ¡Mejora tus habilidades de programación con este proyecto práctico!"
-	},
-	"autoPlay": false,
-	"projectType": "project"
+  "title": {
+    "us": "Build a Memory Game with React: Find the Pairs!",
+    "es": "Construye un Juego de Memoria con React: ¡Encuentra los Pares!"
+  },
+  "slug": "memory-game-react",
+  "status": "published",
+  "duration": 4,
+  "preview": "https://storage.googleapis.com/screenshots-breathecode/memory-game-preview.png",
+  "translations": ["es", "us"],
+  "difficulty": "intermediate",
+  "technologies": ["javascript", "react"],
+  "description": {
+    "us": "Build a Memory Game with React: Find the Pairs! Develop a classic memory game where the objective is to find matching pairs of cards. Learn to manage card states and implement game logic to check for matches. Enhance your React skills with this engaging project!",
+    "es": "¡Construye un Juego de Memoria con React: Encuentra los Pares! Desarrolla un juego clásico de memoria donde el objetivo es encontrar pares de cartas iguales. Aprende a manejar el estado de las cartas y a implementar la lógica del juego para verificar coincidencias. ¡Mejora tus habilidades en React con este proyecto interactivo!"
+  },
+  "autoPlay": false,
+  "projectType": "project"
 }
