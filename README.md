@@ -1,12 +1,12 @@
 <!-- hide -->
-# Create a Company Logo Generator using AI
+# Build a Memory Game with React: Find the Pairs!
 <!-- endhide -->
 
-## 🌱 How to start this project
+## 🌱 How to start this project?
 
-Do not clone this repository because we are going to be using a different template.
+Do not clone this repository because we will use a different template.
 
-We recommend opening the `react template` using a provisioning tool like [Codespaces](https://4geeks.com/lesson/what-is-github-codespaces) (recommended) or [Gitpod](https://4geeks.com/lesson/how-to-use-gitpod). Alternatively, you can [clone the GitHub repository](https://4geeks.com/how-to/github-clone-repository) on your local computer using the `git clone` command.
+We recommend opening the `React template` using a provisioning tool like [Codespaces](https://4geeks.com/lesson/what-is-github-codespaces) (recommended) or [Gitpod](https://4geeks.com/lesson/how-to-use-gitpod). Alternatively, you can [clone the GitHub repository](https://4geeks.com/how-to/github-clone-repository) on your local computer using the `git clone` command.
 
 This is the repository you need to open or clone:
 
@@ -14,7 +14,7 @@ This is the repository you need to open or clone:
 https://github.com/4GeeksAcademy/react-hello
 ```
 
-> ⚠ You will need to have Node.js installed if you do it locally, but all of that is already installed on Codespaces or Gitpod.
+> ⚠ You will need to have Node.js installed if you do it locally, but all of that is already installed on Codespaces or Gitpod!
 
 ## 📝 Instructions
 
@@ -24,84 +24,116 @@ https://github.com/4GeeksAcademy/react-hello
   
 - [ ] Follow the instructions in the README of the repository to set up your development environment.
 
-### Step 2: Get Access to ChatGPT's API
+### Step 2: Plan the Game Structure
 
-- [ ] Sign up for an account at [OpenAI](https://www.openai.com/).
-- [ ] Navigate to the API section and obtain your API key for accessing ChatGPT.
+- [ ] Create a sketch or diagram of how your memory game will be structured.
+  - How many cards will there be?
+  - How will you represent the cards in the state?
+  - What properties will you need for each card (e.g., id, image, flipped state)?
 
-### Step 3: Create an Input Form
+### Step 3: Implement the Game Board
 
-- [ ] In your React app, create a form where users can provide details about the company:
+- [ ] Create a `Board` component that will contain the cards.
 
-   - Company Name
-   - Industry
-   - Preferred Logo Style (e.g., minimalist, vintage, modern)
+- [ ] Create a `Card` component that will represent each individual card.
 
-### Step 4: Connect to ChatGPT's API
+- [ ] Generate a set of cards with matching pairs and shuffle them randomly.
 
-- [ ] Use the user input to create a prompt for the ChatGPT API.
+```jsx
+// Example of card generation
+const cards = [
+  { id: 1, image: 'url1', matched: false },
+  { id: 1, image: 'url1', matched: false },
+  // ... more cards
+];
+```
 
-- [ ] Make a request to the ChatGPT API when the form is submitted.
+### Step 4: Manage Card State with useState
 
-Example:
+- [ ] Use the `useState` hook to manage the state of the cards in the `Board` component.
 
-```js
-const handleGenerateLogo = async ({ companyName, industry, style }) => {
- const prompt = `Create a detailed description of a logo for a company named "${companyName}", operating in the "${industry}" industry. The logo should have a "${style}" style.`;
+- [ ] Create states for:
+  - The currently flipped cards.
+  - The cards that have been matched (correct pairs).
+  - The number of attempts or moves made (optional).
 
- try {
-   const response = await fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
-     method: 'POST',
-     headers: {
-       'Authorization': `Bearer YOUR_OPENAI_API_KEY`,
-       'Content-Type': 'application/json',
-     },
-     body: JSON.stringify({
-       prompt: prompt,
-       max_tokens: 150,
-       n: 1,
-       stop: null,
-       temperature: 0.7,
-     }),
-   });
+```jsx
+const [cards, setCards] = useState([]);
+const [flippedCards, setFlippedCards] = useState([]);
+const [matchedCards, setMatchedCards] = useState([]);
+```
 
-   const data = await response.json();
-   const description = data.choices[0].text.trim();
-   setLogoDescription(description);
- } catch (error) {
-   console.error('Error generating logo description:', error);
- }
+### Step 5: Implement Game Logic with useEffect
+
+- [ ] Use the `useEffect` hook to check if the two flipped cards are a pair.
+
+- [ ] If the cards match, update the state to reflect that they have been found.
+
+- [ ] If they don't match, flip the cards back over after a brief delay.
+
+```jsx
+useEffect(() => {
+  if (flippedCards.length === 2) {
+    const [firstCard, secondCard] = flippedCards;
+    if (firstCard.id === secondCard.id) {
+      setMatchedCards([...matchedCards, firstCard.id]);
+    }
+    setTimeout(() => setFlippedCards([]), 1000);
+  }
+}, [flippedCards]);
+```
+
+### Step 6: Add Click Event Handling
+
+- [ ] In the `Card` component, add an `onClick` event that handles when a card is selected.
+
+- [ ] Make sure you cannot flip more than two cards at a time and that you cannot select the same card twice!
+
+```jsx
+const handleCardClick = (card) => {
+  if (flippedCards.length < 2 && !flippedCards.includes(card)) {
+    setFlippedCards([...flippedCards, card]);
+  }
 };
 ```
 
-> **Note:** Remember to replace `'YOUR_OPENAI_API_KEY'` with your actual OpenAI API key.
+### Step 7: Add Simple Animations
 
-### Step 5: Display the Generated Logo Description
+- [ ] Use CSS to add transitions or animations when the cards are flipped.
 
-- [ ] Display the logo description returned from the API to the user in your React app.
+- [ ] You can change the CSS class of the card based on its state (flipped or not) and apply styles accordingly.
 
-- [ ] Ensure the description is presented in a readable format, possibly with styling to enhance user experience.
+```css
+.card {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
 
-### Step 6: Bonus - Visual Representation
+.card.flipped {
+  transform: rotateY(180deg);
+}
+```
 
-- [ ] Try to add a feature where you visually generate a simple logo based on the description provided by ChatGPT. You can use libraries like [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API), [Fabric.js](http://fabricjs.com/), or [Konva.js](https://konvajs.org/) to create basic visual designs.
+### Step 8: Improve the User Interface
 
-- [ ] Alternatively, you can integrate with an AI image generation API like [DALL·E](https://openai.com/dall-e-2/) to create an image based on the description.
+- [ ] Add visual elements like a move counter or a timer!
 
-### Bonus Section
+- [ ] Ensure the game is responsive and looks good on different screen sizes.
 
-#### Additional Features to Practice and Improve the Project
+## Bonus Section
 
-1. **Logo Variations:** Allow users to generate multiple logo descriptions with different styles or themes by modifying the prompt.
+### Additional Features to Practice and Improve the Project:
 
-2. **Styling:** Enhance your app's appearance using CSS or styling libraries like [Bootstrap](https://getbootstrap.com/) or [Material-UI](https://material-ui.com/).
+1. **Score Counter:** Implement a scoring system based on the number of moves or the time it takes the player to complete the game!
 
-3. **Save Descriptions:** Implement functionality to save or download the generated logo descriptions for future reference.
+2. **Difficulty Levels:** Add different difficulty levels with more or fewer cards.
 
-4. **User Accounts:** Add a user authentication system so users can save their logo ideas and access them later.
+3. **Sounds and Effects:** Add sound effects when flipping cards or finding a pair!
 
-5. **Error Handling:** Add robust error handling to manage API errors, network issues, or invalid inputs gracefully.
+4. **Save Progress:** Allow the player to pause and continue the game by saving the state in local storage.
 
-6. **Responsive Design:** Ensure your app looks good on various screen sizes by implementing responsive design practices.
+5. **Customizable Theme:** Let the player choose between different themes or sets of images for the cards!
 
-Explore different enhancements to make your logo generator app more interactive and visually appealing!
+6. **Multiplayer Game:** Implement a mode where two players compete in turns and record who finds more pairs.
+
+Explore different enhancements to make your memory game more interactive and entertaining!
