@@ -1,5 +1,5 @@
 <!-- hide -->
-# Crear un Generador de Logos de Empresa usando IA
+# ¡Construye un Juego de Memoria con React: Encuentra los Pares!
 <!-- endhide -->
 
 ## 🌱 ¿Cómo iniciar este proyecto?
@@ -14,7 +14,7 @@ Este es el repositorio que necesitas abrir o clonar:
 https://github.com/4GeeksAcademy/react-hello
 ```
 
-> ⚠ Necesitarás tener Node.js instalado si lo haces localmente, pero todo eso ya está instalado en Codespaces o Gitpod.
+> ⚠ ¡Necesitarás tener Node.js instalado si lo haces localmente, pero todo eso ya está instalado en Codespaces o Gitpod!
 
 ## 📝 Instrucciones
 
@@ -24,84 +24,115 @@ https://github.com/4GeeksAcademy/react-hello
   
 - [ ] Sigue las instrucciones en el README del repositorio para configurar tu entorno de desarrollo.
 
-### Paso 2: Obtén acceso a la API de ChatGPT
+### Paso 2: Planifica la Estructura del Juego
 
-- [ ] Regístrate para obtener una cuenta en [OpenAI](https://www.openai.com/).
-- [ ] Navega a la sección de API y obtén tu clave API para acceder a ChatGPT.
+- [ ] Crea un boceto o diagrama de cómo será la estructura de tu juego de memoria.
+  - ¿Cuántas cartas habrá?
+  - ¿Cómo representarás las cartas en el estado?
+  - ¿Qué propiedades necesitarás para cada carta (por ejemplo, id, imagen, estado volteado)?
 
-### Paso 3: Crea un Formulario de Entrada
+### Paso 3: Implementa el Tablero de Juego
 
-- [ ] En tu aplicación React, crea un formulario donde los usuarios puedan proporcionar detalles sobre la empresa:
+- [ ] Crea un componente `Board` que contendrá las cartas.
 
-   - Nombre de la empresa
-   - Industria
-   - Estilo de logotipo preferido (por ejemplo, minimalista, vintage, moderno)
+- [ ] Crea un componente `Card` que representará cada carta individual.
 
-### Paso 4: Conecta a la API de ChatGPT
+- [ ] Genera un conjunto de cartas con pares iguales y barájalas aleatoriamente.
 
-- [ ] Utiliza la entrada del usuario para crear un prompt para la API de ChatGPT.
+```jsx
+// Ejemplo de generación de cartas
+const cards = [
+  { id: 1, image: 'url1', matched: false },
+  { id: 2, image: 'url2', matched: false },
+  // ... más cartas
+];
+```
 
-- [ ] Realiza una solicitud a la API de ChatGPT cuando se envíe el formulario.
+### Paso 4: Maneja el Estado de las Cartas con useState
 
-Ejemplo:
+- [ ] Utiliza el hook `useState` para manejar el estado de las cartas en el componente `Board`.
+- [ ] Crea estados para:
+  - Las cartas volteadas actualmente.
+  - Las cartas que han sido encontradas (pares correctos).
+  - El número de intentos o movimientos realizados (opcional).
 
-```js
-const handleGenerateLogo = async ({ companyName, industry, style }) => {
-  const prompt = `Crea una descripción detallada de un logotipo para una empresa llamada "${companyName}", que opera en la industria de "${industry}". El logotipo debería tener un estilo "${style}".`;
+```jsx
+const [cards, setCards] = useState([]);
+const [flippedCards, setFlippedCards] = useState([]);
+const [matchedCards, setMatchedCards] = useState([]);
+```
 
-  try {
-    const response = await fetch('https://api.openai.com/v1/engines/text-davinci-003/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer TU_CLAVE_API_DE_OPENAI`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        max_tokens: 150,
-        n: 1,
-        stop: null,
-        temperature: 0.7,
-      }),
-    });
+### Paso 5: Implementa la Lógica del Juego con useEffect
 
-    const data = await response.json();
-    const description = data.choices[0].text.trim();
-    setLogoDescription(description);
-  } catch (error) {
-    console.error('Error al generar la descripción del logotipo:', error);
+- [ ] Utiliza el hook `useEffect` para verificar si las dos cartas volteadas son un par.
+
+- [ ] Si las cartas coinciden, actualiza el estado para reflejar que han sido encontradas.
+
+- [ ] Si no coinciden, voltea las cartas de nuevo después de un breve retraso.
+
+```jsx
+useEffect(() => {
+  if (flippedCards.length === 2) {
+    const [firstCard, secondCard] = flippedCards;
+    if (firstCard.id === secondCard.id) {
+      setMatchedCards([...matchedCards, firstCard.id]);
+    }
+    setTimeout(() => setFlippedCards([]), 1000);
+  }
+}, [flippedCards]);
+```
+
+### Paso 6: Agrega Control de Eventos de Clic
+
+- [ ] En el componente `Card`, agrega un evento `onClick` que maneje cuando una carta es seleccionada.
+
+- [ ] ¡Asegúrate de que no puedas voltear más de dos cartas a la vez y que no puedas seleccionar la misma carta dos veces!
+
+```jsx
+const handleCardClick = (card) => {
+  if (flippedCards.length < 2 && !flippedCards.includes(card)) {
+    setFlippedCards([...flippedCards, card]);
   }
 };
 ```
 
-> **Nota:** Recuerda reemplazar `'TU_CLAVE_API_DE_OPENAI'` con tu clave API real de OpenAI.
+### Paso 7: Agrega Animaciones Simples
 
-### Paso 5: Muestra la Descripción del Logotipo Generado
+- [ ] Utiliza CSS para agregar transiciones o animaciones cuando las cartas se voltean.
 
-- [ ] Muestra la descripción del logotipo devuelta por la API al usuario en tu aplicación React.
+- [ ] Puedes cambiar la clase CSS de la carta según su estado (volteada o no) y aplicar estilos en consecuencia.
 
-- [ ] Asegúrate de que la descripción se presente en un formato legible, posiblemente con estilos para mejorar la experiencia del usuario.
+```css
+.card {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
 
-### Paso 6: Bonus - Representación Visual
+.card.flipped {
+  transform: rotateY(180deg);
+}
+```
 
-- [ ] Intenta agregar una función donde generes visualmente un logotipo simple basado en la descripción proporcionada por ChatGPT. Puedes usar librerías como [Canvas API](https://developer.mozilla.org/es/docs/Web/API/Canvas_API), [Fabric.js](http://fabricjs.com/), o [Konva.js](https://konvajs.org/) para crear diseños visuales básicos.
+### Paso 8: Mejora la Interfaz de Usuario
 
-- [ ] Alternativamente, puedes integrar una API de generación de imágenes con IA como [DALL·E](https://openai.com/dall-e-2/) para crear una imagen basada en la descripción.
+- [ ] ¡Agrega elementos visuales como un contador de movimientos o un temporizador!
 
-### Sección de Bonus
+- [ ] Asegúrate de que el juego sea responsivo y se vea bien en diferentes tamaños de pantalla.
 
-#### Características Adicionales para Practicar y Mejorar el Proyecto
+## Sección de Bonus
 
-1. **Variaciones de Logotipo:** Permite a los usuarios generar múltiples descripciones de logotipos con diferentes estilos o temas modificando el prompt.
+### Características Adicionales para Practicar y Mejorar el Proyecto
 
-2. **Estilización:** Mejora la apariencia de tu aplicación usando CSS o librerías de estilos como [Bootstrap](https://getbootstrap.com/) o [Material-UI](https://material-ui.com/).
+1. **Contador de Puntuación:** ¡Implementa un sistema de puntuación basado en el número de movimientos o el tiempo que tarda el jugador en completar el juego!
 
-3. **Guardar Descripciones:** Implementa funcionalidad para guardar o descargar las descripciones de logotipos generadas para referencia futura.
+2. **Niveles de Dificultad:** Agrega diferentes niveles de dificultad con más o menos cartas.
 
-4. **Cuentas de Usuario:** Agrega un sistema de autenticación para que los usuarios puedan guardar sus ideas de logotipos y acceder a ellas más tarde.
+3. **Sonidos y Efectos:** ¡Añade efectos de sonido al voltear cartas o encontrar un par!
 
-5. **Manejo de Errores:** Agrega un manejo de errores robusto para gestionar errores de API, problemas de red o entradas inválidas de manera adecuada.
+4. **Guardar Progreso:** Permite al jugador pausar y continuar el juego guardando el estado en el almacenamiento local.
 
-6. **Diseño Responsivo:** Asegúrate de que tu aplicación se vea bien en varios tamaños de pantalla implementando prácticas de diseño responsivo.
+5. **Tema Personalizable:** ¡Deja que el jugador elija entre diferentes temas o conjuntos de imágenes para las cartas!
 
-¡Explora diferentes mejoras para hacer tu aplicación generadora de logotipos más interactiva y visualmente atractiva!
+6. **Juego Multijugador:** Implementa un modo para que dos jugadores compitan por turnos y registra quién encuentra más pares.
+
+¡Explora diferentes mejoras para hacer tu juego de memoria más interactivo y entretenido!
