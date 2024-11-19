@@ -6,6 +6,7 @@
   "slug": "memory-game-react",
   "status": "published",
   "duration": 4,
+  "template_url": "https://github.com/4GeeksAcademy/react-hello",
   "preview": "https://storage.googleapis.com/screenshots-breathecode/b7aa404a22c1b5c81a7c00d9dc8e973b382e2a2092b82c9ecf261257987e3f24",
   "translations": ["es", "us"],
   "difficulty": "intermediate",
