@@ -2,7 +2,7 @@
 # Build a Memory Game with React: Find the Pairs!
 <!-- endhide -->
 
-<onlyfor saas="true" withBanner="true">
+<onlyfor saas="true" withBanner="false">
   
 ## 🌱 How to start this project?
 
