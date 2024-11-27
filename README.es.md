@@ -2,7 +2,7 @@
 # ¡Construye un Juego de Memoria con React: Encuentra los Pares!
 <!-- endhide -->
 
-<onlyfor saas="true" withBanner="false">
+<onlyfor saas="false" withBanner="false">
 
 ## 🌱 ¿Cómo iniciar este proyecto?
 
