@@ -16,5 +16,7 @@
     "es": "¡Construye un Juego de Memoria con React: Encuentra los Pares! Desarrolla un juego clásico de memoria donde el objetivo es encontrar pares de cartas iguales. Aprende a manejar el estado de las cartas y a implementar la lógica del juego para verificar coincidencias. ¡Mejora tus habilidades en React con este proyecto interactivo!"
   },
   "autoPlay": false,
-  "projectType": "project"
+  "projectType": "project",
+  "telemetry": {
+	"batch": "https://breathecode.herokuapp.com/v1/assignment/me/telemetry?asset_id=2016"
 }
